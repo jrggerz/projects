@@ -23,22 +23,26 @@ function App() {
     const receiveMessage = (message) => {
       setMessages([message, ...messages]);
     };
-    socket.on('message', receiveMessage );
+    socket.on('message', receiveMessage);
     return () => socket.off('message', receiveMessage);
   }, [messages]);
   //
   return (
-    <div className="App">
-      <form onSubmit={handleSubmit}>
+    <div className="h-screen bg-zinc-800 text-white flex items-center justify-center">
+      <form onSubmit={handleSubmit} className="bg-zinc-900 p-10 my-2">
+        <h1 className="text-2x1 font-bold">Chat React </h1>
         <input type="text" onChange={(e) => setMessage(e.target.value)}
-          value={message} />
-        <button>send</button>
+          value={message}
+          className="border-2 border-zinc-500 p-2 text-black w-full" />
+        {/*<button className="bg-blue 500">send</button>*/}
+        <ul className="h-80 overflow-y-auto">
+          {messages.map((messages, index) => (
+            <li key={index} className={`my-2 p-2 table text-sm  rounded-md ${message.from === 'Me' ? "bg-sky-700  ml-auto" : "bg-black"}`}>
+              <p>{messages.from}: {messages.body}</p>
+            </li>
+          ))}
+        </ul>
       </form>
-      {messages.map( (messages, index) =>(
-        <div key = {index}>
-          <p>{messages.from}: {messages.body}</p>
-        </div>
-      ))}
     </div>
   );
 }
